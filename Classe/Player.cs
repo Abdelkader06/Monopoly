@@ -11,7 +11,7 @@ namespace Monopoly.Classe
 
         #region Proprites
         private List<Property> possessions;
-        private List<Property> Possessions
+        public List<Property> Possessions
         {
             get { return possessions; }
         }

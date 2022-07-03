@@ -40,13 +40,20 @@ namespace Monopoly.Classe
 
         public int RollDice()
         {
-            //TODO
-            throw new NotImplementedException();
+          Random random = new Random();
+          return random.Next(1, 13);
         }
         private int GetInput(Player player, Property property)
         {
-            //TODO
-            throw new NotImplementedException();
+            Console.WriteLine("No one owns the street you can buy it for {0}£, you have {1}£ left.\n" + "Press 1 if you want to buy it, 0 otherwise.",property.Price, player.Balance);
+            string choice = Console.ReadLine();
+            while (choice == null || choice != "0" && choice!= "1")
+            {
+                Console.WriteLine(" Please Press 1 if you want to buy it, 0 otherwise ");
+                choice = Console.ReadLine(); 
+            }
+
+            return Int32.Parse(choice);
         }
         public void BuyProperty(Property property, Player player, int input)
         {
@@ -71,17 +78,32 @@ namespace Monopoly.Classe
             //TODO
             throw new NotImplementedException();
         }
-
+        
         public bool PlayerWon()
         {
-            //TODO
-            throw new NotImplementedException();
+            if(playersNumber == 1)
+            {
+                Console.WriteLine("Congratulations {0}, you won !", players[0].Name);
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
         }
 
+       
         public void PlayerLost(Player player)
         {
-            //TODO
-            throw new NotImplementedException();
+            Console.WriteLine("You don't have enough money, you lost !");
+            foreach(Property p in player.Possessions)
+            {
+                p.Owner = null;
+            }
+            player.Possessions.Clear();
+            players.Remove(player);
+            playersNumber--;
         }
 
         public void AddBoard(Cell cell)
