@@ -23,17 +23,7 @@ namespace Monopoly.Classe
 
         public bool TaxPlayer(Player player)
         {
-            if (player.Balance >= amount)
-            {
-                player.Balance -= amount;
-
-                return true;
-            }
-
-            else
-            {
-                return false;
-            }
+            return this.ModifyBudget(player, amount);
         }
 
         /*

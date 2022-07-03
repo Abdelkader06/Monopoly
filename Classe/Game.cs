@@ -53,12 +53,22 @@ namespace Monopoly.Classe
                 choice = Console.ReadLine(); 
             }
 
-            return Int32.Parse(choice);
+            return int.Parse(choice);
         }
         public void BuyProperty(Property property, Player player, int input)
         {
-            //TODO
-            throw new NotImplementedException();
+           if (input == 1)
+            {
+                if (player.Buy(property))
+                {
+                    Console.WriteLine("You bought " + property.Name + "your balance is now:" + player.Balance);
+                }
+
+                else
+                {
+                    Console.WriteLine("Insufficient funds");
+                }
+            }
         }
 
         public bool OnRegular(Cell cell, Player player)

@@ -10,26 +10,12 @@ namespace Monopoly.Classe
     {
         protected bool ModifyBudget(Player player, int amount)
         {
-            int abs = Math.Abs(amount);
-
-            if (player.Balance < abs)
-            {
-                return false;
-            }
+            int montant = Math.Abs(amount);
+            if (amount < 0)
+                return player.RetrieveMoney(montant);
             else
-            {
-                if (amount >= 0)
-                {
-                    player.Balance += abs;
-                }
-
-                else
-                {
-                    player.Balance -= abs;
-                }
-
-                return true;
-            }
+                player.ReceiveMoney(montant);
+            return true;
         }
     }
 }
