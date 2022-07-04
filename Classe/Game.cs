@@ -38,6 +38,7 @@ namespace Monopoly.Classe
             board = new List<Cell>();
         }
 
+      
         public int RollDice()
         {
           Random random = new Random();
@@ -45,7 +46,7 @@ namespace Monopoly.Classe
         }
         private int GetInput(Player player, Property property)
         {
-            Console.WriteLine("No one owns the street you can buy it for {0}£, you have {1}£ left.\n" + "Press 1 if you want to buy it, 0 otherwise.",property.Price, player.Balance);
+            Console.WriteLine("No one owns the street you can buy it for {0}£, you have {1}£ left.\n" + " Press 1 if you want to buy it, 0 otherwise.",property.Price, player.Balance);
             string choice = Console.ReadLine();
             while (choice == null || choice != "0" && choice!= "1")
             {
@@ -55,6 +56,7 @@ namespace Monopoly.Classe
 
             return int.Parse(choice);
         }
+
         public void BuyProperty(Property property, Player player, int input)
         {
            if (input == 1)
@@ -73,14 +75,48 @@ namespace Monopoly.Classe
 
         public bool OnRegular(Cell cell, Player player)
         {
-            //TODO
-            throw new NotImplementedException();
+            // Caster la cell en type property
+            Property property = (Property)cell;
+            Console.WriteLine("You're now on the cell {0}", property.Name);
+
+            if (property.Owner == null)
+            {
+                int input = this.GetInput(player,property);
+                this.BuyProperty(property, player,input);
+            }
+
+            else if(property.Owner != player)
+            {
+                Console.WriteLine("This cell is owned by {0}, and the rent cost is {2}", property.Owner.Name, property.RentCost);
+                bool transfert = player.TransferTo(property.Owner, property.RentCost);
+                if (transfert)
+                    Console.WriteLine("You paid {1} £, and your balance is {2} £", property.RentCost, player.Balance);
+                else
+                    PlayerLost(player);
+                    return false;  
+          }
+
+            else
+            {
+                Console.WriteLine("you own this proprety");
+            }
+
+            return true;
         }
 
         public bool OnTax(Tax tax, Player player)
         {
-            //TODO
-            throw new NotImplementedException();
+            Console.WriteLine("You are now on a tax cell: you have to pay: {1} £", tax.Amount);
+            if (tax.TaxPlayer(player))
+            {
+                Console.WriteLine("You paid : {1} £ , your balance is now {2} £ ", tax.Amount,player.Balance);
+                return true;
+            }
+            else
+            {
+                this.PlayerLost(player);
+                return false;
+            }
         }
 
         public bool PlayRound(Player player)

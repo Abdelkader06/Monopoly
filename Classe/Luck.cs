@@ -17,7 +17,6 @@ namespace Monopoly.Classe
             /* Implement the Box-Muller Methode in order to generate
              * random numbers
              */
-
             Random rand = new Random();
             double x, y, u;
             u = 0;
@@ -56,37 +55,23 @@ namespace Monopoly.Classe
         public bool MoneyEffect(Player player, double rand)
         {
             int amount = GetAmount(rand);
+            return this.ModifyBudget(player,amount);
 
-            if (player.Balance >= amount)
-            {
-                player.Balance += amount;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public bool GetEffect(Player player)
         {
             double rundomValue = GetRandomValue();
             double abs = Math.Abs(rundomValue);
-
             if (abs < 2)
             {
-                bool res = MoneyEffect(player,abs);
-
-                return res;
+                 return MoneyEffect(player, rundomValue);
             }
-
             else
             {
                 player.SendToJail();
-                return false;
+                return true;
             }
-
-                
         }
 
         public override string ToString()
